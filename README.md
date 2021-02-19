@@ -1,6 +1,6 @@
 # IFT3150
 
-_Mon projet d'informatique en théorie des graphes._
+## Mon projet d'informatique en théorie des graphes
 
 Mon superviseur est Gena Hahn (<hahn@iro.umontreal.ca>).
 
