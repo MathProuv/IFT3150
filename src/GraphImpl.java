@@ -32,6 +32,11 @@ public class GraphImpl implements Graph{
     public void addEdge(Node node1, Node node2){
         Edge edge = new Edge(node1, node2);
         this.addEdge(edge);
+        if (!this.nodes.contains(node1)){
+            this.nodes.add(node1);
+        }if (!this.nodes.contains(node2)){
+            this.nodes.add(node2);
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ public class Edge {
     private HashSet<Node> nodes;
 
     public Edge(Node node1, Node node2){
+        this.nodes = new HashSet<>();
         nodes.add(node1);
         nodes.add(node2);
     }

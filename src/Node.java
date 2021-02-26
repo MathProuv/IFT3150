@@ -3,7 +3,7 @@ import javafx.scene.paint.Color;
 
 public class Node {
     private final int rayon = 10;
-    private final Color color = Color.rgb(255, 0, 0, 0.7);
+    private final Color color = Color.RED;
 
     private String name;
     private int x, y;
@@ -24,7 +24,7 @@ public class Node {
     }
 
     public void draw(GraphicsContext context){
-        context.setFill(this.color);
+        context.setStroke(this.color);
         context.strokeOval(this.x, this.y, this.rayon, this.rayon);
     }
 
