@@ -18,14 +18,35 @@ public class GraphImpl implements Graph{
         this.edges = new ArrayList<>();
     }
 
-
+    @Override
     public void addNode(Node node){
         this.nodes.add(node);
     }
 
+    @Override
+    public void addEdge(Edge edge) {
+        this.edges.add(edge);
+    }
+
+    @Override
     public void addEdge(Node node1, Node node2){
         Edge edge = new Edge(node1, node2);
-        this.edges.add(edge);
+        this.addEdge(edge);
+    }
+
+    @Override
+    public void rmNode(Node node) {
+        this.nodes.remove(node);
+    }
+
+    @Override
+    public void rmEdge(Edge edge) {
+        this.edges.remove(edge);
+    }
+
+    @Override
+    public void rmEdge(Node node1, Node node2) {
+        //TODO
     }
 
     public void draw(GraphicsContext context){
