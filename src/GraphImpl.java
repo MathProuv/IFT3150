@@ -5,17 +5,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class GraphImpl implements Graph{
-    private final int width = 640, height = 480;
-
-    private ArrayList<Node> nodes;
-    private ArrayList<Edge> edges;
-
-    private Canvas canvas = new Canvas(width, height);
-    private GraphicsContext context = canvas.getGraphicsContext2D();
+    private ArrayList<Node> nodes = new ArrayList<>();
+    private ArrayList<Edge> edges = new ArrayList<>();
 
     public GraphImpl(){
-        this.nodes = new ArrayList<>();
-        this.edges = new ArrayList<>();
     }
 
     @Override
@@ -32,11 +25,8 @@ public class GraphImpl implements Graph{
     public void addEdge(Node node1, Node node2){
         Edge edge = new Edge(node1, node2);
         this.addEdge(edge);
-        if (!this.nodes.contains(node1)){
-            this.nodes.add(node1);
-        }if (!this.nodes.contains(node2)){
-            this.nodes.add(node2);
-        }
+        this.nodes.add(node1);
+        this.nodes.add(node2);
     }
 
     @Override

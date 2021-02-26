@@ -13,16 +13,15 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Vue extends Application {
-    private final int width = 800, height = 600;
-    private final double rapport = width/height;
-    private final int widthCanvas = Math.min(width,height), heightCanvas = widthCanvas;
+    private final int width = 800, height = 600; // fenêtre
+    public final int widthCanvas = Math.min(width,height), heightCanvas = widthCanvas;
+    private final Controleur controleur = new Controleur(this);
     private Stage primaryStage;
-    private Controleur controleur = new Controleur(this);
 
     private final Canvas canvas = new Canvas(widthCanvas,heightCanvas);
     private final GraphicsContext context = canvas.getGraphicsContext2D();
 
-    // Pour ajouter des positions, on garde en mémoire la dernière (cf drag)
+    // on garde en mémoire la dernière position de l'entrée dans un click
     private Node node1;
 
     public static void main(String[] args) { launch(args); }
@@ -55,37 +54,22 @@ public class Vue extends Application {
         context.setFill(Color.WHITE);
         context.fillRect(0,0,widthCanvas,heightCanvas);
 
-        canvas.setOnMouseClicked(click -> {
-            if (createButton.isSelected()) {
-                double x = click.getX(), y = click.getY();
-                controleur.addNode(new Node((int)x,(int)y));
-            }
-            this.controleur.draw(context);
-        });
 
-        canvas.setOnDragDetected(drag -> {
-            System.out.println("drag detected");
-        });
-
-        canvas.setOnMouseDragEntered(drag -> {
-            if (createButton.isSelected()){
-                this.node1 = new Node((int)drag.getX(), (int)drag.getY());
+        if (createButton.isSelected()){
+            canvas.setOnMousePressed(click -> {
+                this.node1 = new Node((int) click.getX(), (int) click.getY());
                 this.controleur.addNode(node1);
-                System.out.println("on entre");
-            }
-        });
-        canvas.setOnMouseDragExited(drag -> {
-            if (createButton.isSelected()){
-                double x2 = drag.getX(), y2 = drag.getY();
-                Node node2 = new Node((int)x2, (int)y2);
-                Edge edge = new Edge(this.node1,node2);
-                this.controleur.addEdge(edge);
-            }
-            this.controleur.draw(context);
-            System.out.println("on sort");
-        });
-
-
+                this.controleur.draw(context);
+            });
+            canvas.setOnMouseReleased(click -> {
+                Node node2 = new Node((int) click.getX(), (int) click.getY());
+                if (!this.node1.isEquals(node2)){
+                    Edge edge = new Edge(this.node1,node2);
+                    this.controleur.addEdge(this.node1,node2);
+                }
+                this.controleur.draw(context);
+            });
+        }
 
         return scene;
     }

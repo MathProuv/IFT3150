@@ -1,4 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Controleur {
     private Graph graph;
@@ -13,6 +14,8 @@ public class Controleur {
     }
 
     public void draw(GraphicsContext context){
+        context.setFill(Color.WHITE);
+        context.fillRect(0,0,vue.widthCanvas,vue.heightCanvas);
         this.graph.draw(context);
     }
 
@@ -20,7 +23,7 @@ public class Controleur {
         this.graph.addNode(node);
     }
 
-    public void addEdge(Edge edge){
-        this.graph.addEdge(edge);
+    public void addEdge(Node node1, Node node2){
+        this.graph.addEdge(node1, node2);
     }
 }
