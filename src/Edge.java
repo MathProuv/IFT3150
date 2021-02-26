@@ -17,7 +17,7 @@ public class Edge {
     }
 
     public void draw(GraphicsContext context){
-        context.setFill(color);
+        context.setStroke(color);
         Iterator<Node> nodeIter = this.nodes.iterator();
         Node node1 = nodeIter.next();
         Node node2 = nodeIter.next();

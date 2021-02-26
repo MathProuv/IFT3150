@@ -12,8 +12,25 @@ public class GraphImpl implements Graph{
     }
 
     @Override
+    public boolean contains(Node node) {
+        for (Node nodeIn : nodes) {
+            if (node.isEquals(nodeIn)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void addNode(Node node){
-        this.nodes.add(node);
+        if (!this.contains(node)){
+            this.nodes.add(node);
+        }
+    }
+
+    @Override
+    public boolean contains(Edge edge) {
+        return this.edges.contains(edge);
     }
 
     @Override
@@ -25,8 +42,8 @@ public class GraphImpl implements Graph{
     public void addEdge(Node node1, Node node2){
         Edge edge = new Edge(node1, node2);
         this.addEdge(edge);
-        this.nodes.add(node1);
-        this.nodes.add(node2);
+        this.addNode(node1);
+        this.addNode(node2);
     }
 
     @Override
@@ -45,11 +62,11 @@ public class GraphImpl implements Graph{
     }
 
     public void draw(GraphicsContext context){
-        for (Node node : nodes) {
-            node.draw(context);
-        }
         for (Edge edge : edges) {
             edge.draw(context);
+        }
+        for (Node node : nodes) {
+            node.draw(context);
         }
     }
 }

@@ -1,6 +1,8 @@
 import javafx.scene.canvas.GraphicsContext;
 
 public interface Graph {
+    boolean contains(Node node);
+    boolean contains(Edge edge);
     void addNode(Node node);
     void addEdge(Edge edge);
     void addEdge(Node node1, Node Node2);

@@ -55,21 +55,19 @@ public class Vue extends Application {
         context.fillRect(0,0,widthCanvas,heightCanvas);
 
 
-        if (createButton.isSelected()){
-            canvas.setOnMousePressed(click -> {
-                this.node1 = new Node((int) click.getX(), (int) click.getY());
-                this.controleur.addNode(node1);
-                this.controleur.draw(context);
-            });
-            canvas.setOnMouseReleased(click -> {
-                Node node2 = new Node((int) click.getX(), (int) click.getY());
-                if (!this.node1.isEquals(node2)){
-                    Edge edge = new Edge(this.node1,node2);
-                    this.controleur.addEdge(this.node1,node2);
-                }
-                this.controleur.draw(context);
-            });
-        }
+        canvas.setOnMousePressed(click -> {
+            this.node1 = new Node((int) click.getX(), (int) click.getY());
+            this.controleur.addNode(node1);
+            this.controleur.draw(context);
+        });
+        canvas.setOnMouseReleased(click -> {
+            Node node2 = new Node((int) click.getX(), (int) click.getY());
+            if (!this.node1.isEquals(node2)){
+                Edge edge = new Edge(this.node1,node2);
+                this.controleur.addEdge(this.node1,node2);
+            }
+            this.controleur.draw(context);
+        });
 
         return scene;
     }
