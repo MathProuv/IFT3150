@@ -5,7 +5,7 @@ public class Node {
     private final int rayon = 10;
     private final Color color = Color.RED;
 
-    private String name;
+    private final String name;
     private int x, y;
 
     public Node(int x, int y, String name){
@@ -25,9 +25,12 @@ public class Node {
 
     public void draw(GraphicsContext context){
         context.setStroke(this.color);
+        context.setFill(this.color);
         context.strokeOval(this.x-this.rayon, this.y-this.rayon, this.rayon*2, this.rayon*2);
         if (this.name != null){
             context.fillText(this.name, this.x, this.y);
+        } else {
+            context.fillText(this.toString(),this.x,this.y);
         }
     }
 
@@ -35,8 +38,13 @@ public class Node {
 
     public int getY() { return y; }
 
-    public boolean isEquals(Node node2){
+    public boolean isEqual(Node node2){
         double dist2 = Math.pow(this.x - node2.getX(),2) + Math.pow(this.y - node2.getY(),2);
         return dist2 <= Math.pow(this.rayon,2);
+    }
+
+    @Override
+    public String toString(){
+        return String.valueOf(this.x) + "," + String.valueOf(this.y);
     }
 }

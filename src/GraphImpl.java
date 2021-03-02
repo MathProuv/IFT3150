@@ -1,20 +1,24 @@
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class GraphImpl implements Graph{
-    private ArrayList<Node> nodes = new ArrayList<>();
-    private ArrayList<Edge> edges = new ArrayList<>();
+    private final ArrayList<Node> nodes;
+    private final ArrayList<Edge> edges;
+    private final HashMap<Node,ArrayList<Node>> neighbors;
 
     public GraphImpl(){
+        this.nodes = new ArrayList<>();
+        this.edges = new ArrayList<>();
+        this.neighbors = new HashMap<>();
     }
 
     @Override
     public boolean contains(Node node) {
-        for (Node nodeIn : nodes) {
-            if (node.isEquals(nodeIn)){
+        for (Node nodeIn : this.nodes) {
+            if (node.isEqual(nodeIn)){
                 return true;
             }
         }
@@ -22,43 +26,64 @@ public class GraphImpl implements Graph{
     }
 
     @Override
-    public void addNode(Node node){
-        if (!this.contains(node)){
-            this.nodes.add(node);
+    public Node addNode(Node node){
+        boolean isNodeIn = false;
+        for (Node nodeIn : this.nodes) {
+            if (node.isEqual(nodeIn)){
+                node = nodeIn;
+                isNodeIn = true;
+            }
         }
+        if (!isNodeIn){
+            this.nodes.add(node);
+            this.neighbors.put(node, new ArrayList<Node>());
+        }
+        return node;
     }
 
     @Override
     public boolean contains(Edge edge) {
-        return this.edges.contains(edge);
+        for (Edge edgeIn : this.edges) {
+            if (edge.isEqual(edgeIn)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public void addEdge(Edge edge) {
-        this.edges.add(edge);
+        if (!this.contains(edge)) {
+            Iterator<Node> nodeIter = edge.getNodesIter();
+            Node node1 = nodeIter.next();
+            Node node2 = nodeIter.next();
+            node1 = this.addNode(node1);
+            node2 = this.addNode(node2);
+            this.neighbors.get(node1).add(node2);
+            this.neighbors.get(node2).add(node1); // Graphe non-orienté
+            this.edges.add(new Edge(node1,node2));
+        }
     }
 
     @Override
     public void addEdge(Node node1, Node node2){
         Edge edge = new Edge(node1, node2);
         this.addEdge(edge);
-        this.addNode(node1);
-        this.addNode(node2);
     }
 
     @Override
-    public void rmNode(Node node) {
-        this.nodes.remove(node);
+    public boolean removeNode(Node node) {
+        return this.nodes.remove(node);
     }
 
     @Override
-    public void rmEdge(Edge edge) {
-        this.edges.remove(edge);
+    public boolean removeEdge(Edge edge) {
+        return this.edges.remove(edge);
     }
 
     @Override
-    public void rmEdge(Node node1, Node node2) {
-        //TODO
+    public boolean removeEdge(Node node1, Node node2) {
+        return this.removeEdge(new Edge(node1,node2));
     }
 
     public void draw(GraphicsContext context){

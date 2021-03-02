@@ -26,4 +26,12 @@ public class Controleur {
     public void addEdge(Node node1, Node node2){
         this.graph.addEdge(node1, node2);
     }
+
+    public void rmNode(Node node){
+        this.graph.removeNode(node);
+    }
+
+    public void rmEdge(Edge edge){
+        this.graph.removeEdge(edge);
+    }
 }
