@@ -39,8 +39,11 @@ public class Node {
     public int getY() { return y; }
 
     public boolean isEqual(Node node2){
+        // la uniqueness d'un noeud est dans ce cas précis définie par la position.
+        // Dans d'autres cas, cela pourrait-être le label, l'adresse mémoire etc
         double dist2 = Math.pow(this.x - node2.getX(),2) + Math.pow(this.y - node2.getY(),2);
         return dist2 <= Math.pow(this.rayon,2);
+        // return node2 == this;
     }
 
     @Override
