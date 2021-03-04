@@ -7,15 +7,11 @@ public class Controleur {
     private Graph graph;
     private Vue vue;
 
-    private int nbCops;
-    private int nbRobbers = 1;
-
-    private ArrayList<Perso> persos;
+    private final ArrayList<Perso> persos = new ArrayList<>();
 
     public Controleur(Vue vue){
         this.graph = new GraphImpl();
         this.vue = vue;
-        this.persos = new ArrayList<>();
     }
 
     public void draw(GraphicsContext context){

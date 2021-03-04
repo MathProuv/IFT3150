@@ -28,7 +28,7 @@ public class Vue extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
-        primaryStage.setTitle("Cops & Robbers");
+        primaryStage.setTitle("Cops & Robbers - Menu");
         primaryStage.setResizable(false);
         primaryStage.setScene(creerSceneModif());
         Image icone = new Image("/images/police-man-caught-robber.jpg");
@@ -37,6 +37,7 @@ public class Vue extends Application {
     }
 
     private Scene creerSceneModif() {
+        primaryStage.setTitle("Cops & Robbers - Création du graphe");
         this.modifGraph = true;
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
@@ -47,7 +48,7 @@ public class Vue extends Application {
 
         Button playButton = new Button("Jouer");
         playButton.setOnMouseClicked(click -> {
-            this.modifGraph = false;
+            this.modifGraph = false;;
             this.primaryStage.setScene(this.creerSceneInit());
         });
 
@@ -78,6 +79,7 @@ public class Vue extends Application {
     }
 
     private Scene creerSceneInit() {
+        primaryStage.setTitle("Cops & Robbers - Initialisation des personnages");
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
 
@@ -89,12 +91,18 @@ public class Vue extends Application {
             this.primaryStage.setScene(this.creerSceneModif());
         });
 
+        // Jeu
+        Button playButton = new Button("Je suis prêt.e");
+        playButton.setOnMouseClicked(click -> {
+            this.primaryStage.setScene(this.creerSceneJeu());
+        });
+
         Text perso = new Text();
         perso.setText("Add perso");
         CheckBox persoGentil = new CheckBox("Si oui Cop, si non Robber");
 
 
-        options.getChildren().addAll(backButton, perso, persoGentil);
+        options.getChildren().addAll(backButton, perso, persoGentil, playButton);
 
         Canvas canvas = new Canvas(widthCanvas,heightCanvas);
         GraphicsContext context = canvas.getGraphicsContext2D();
@@ -105,6 +113,32 @@ public class Vue extends Application {
             this.controleur.addPerso(pos, persoGentil.isSelected());
             this.controleur.draw(context);
         });
+
+        root.getChildren().addAll(options,canvas);
+        StackPane.setAlignment(options, Pos.CENTER_LEFT);
+        StackPane.setAlignment(canvas, Pos.CENTER_RIGHT);
+
+        return scene;
+    }
+
+    public Scene creerSceneJeu() {
+        primaryStage.setTitle("Cops & Robbers");
+        StackPane root = new StackPane();
+        Scene scene = new Scene(root,width,height);
+
+        VBox options = new VBox();
+
+        // Back to modification du graphe
+        Button backButton = new Button("Modification du graphe");
+        backButton.setOnMouseClicked(click -> {
+            this.primaryStage.setScene(this.creerSceneModif());
+        });
+
+        options.getChildren().addAll(backButton);
+
+        Canvas canvas = new Canvas(widthCanvas,heightCanvas);
+        GraphicsContext context = canvas.getGraphicsContext2D();
+        this.controleur.draw(context);
 
         root.getChildren().addAll(options,canvas);
         StackPane.setAlignment(options, Pos.CENTER_LEFT);
