@@ -25,4 +25,4 @@ J'ai créé plusieurs scènes pour :
 2. Initialiser les personnages
 3. Jouer
 
-La dernière scène n'est pas au point
+La dernière scène n'est pas au point, c'est ce sur quoi je dois encore travailler.
