@@ -6,7 +6,7 @@ public abstract class Perso implements Personnage{
     protected Node pos;
     private boolean role; // true=Cop, false=Robber
     protected Image dessin;
-    protected final int sizeImage = 15;
+    protected final int sizeImage = 50;
 
     public Perso(Node pos, boolean roleGentil){
         this.pos = pos;

@@ -2,6 +2,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 public interface Graph {
     boolean contains(Node node);
+    Node getNodeFromPos(Node pos);
     boolean contains(Edge edge);
     Node addNode(Node node);
     void addEdge(Edge edge);

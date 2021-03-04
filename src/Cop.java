@@ -4,6 +4,6 @@ public class Cop extends Perso {
 
     public Cop(Node pos){
         super(pos, false);
-        this.dessin = new Image("images/cop-carre.png",this.sizeImage,this.sizeImage,true,false);
+        this.dessin = new Image("images/cop1.jpg",this.sizeImage,this.sizeImage,true,false);
     }
 }

@@ -17,24 +17,23 @@ public class GraphImpl implements Graph{
 
     @Override
     public boolean contains(Node node) {
-        for (Node nodeIn : this.nodes) {
-            if (node.isEqual(nodeIn)){
-                return true;
+        return node == this.getNodeFromPos(node);
+    }
+
+    @Override
+    public Node getNodeFromPos(Node pos) {
+        for (Node nodeIn : nodes) {
+            if (pos.isEqual(nodeIn)){
+                return nodeIn;
             }
         }
-        return false;
+        //System.out.println("on n'a pas trouvé le node");
+        return pos;
     }
 
     @Override
     public Node addNode(Node node){
-        boolean isNodeIn = false;
-        for (Node nodeIn : this.nodes) {
-            if (node.isEqual(nodeIn)){
-                node = nodeIn;
-                isNodeIn = true;
-            }
-        }
-        if (!isNodeIn){
+        if (node == this.getNodeFromPos(node)){
             this.nodes.add(node);
             this.neighbors.put(node, new ArrayList<Node>());
         }
@@ -57,18 +56,20 @@ public class GraphImpl implements Graph{
             Iterator<Node> nodeIter = edge.getNodesIter();
             Node node1 = nodeIter.next();
             Node node2 = nodeIter.next();
-            node1 = this.addNode(node1);
-            node2 = this.addNode(node2);
-            this.neighbors.get(node1).add(node2);
-            this.neighbors.get(node2).add(node1); // Graphe non-orienté
-            this.edges.add(new Edge(node1,node2));
+            this.addEdge(node1, node2);
         }
     }
 
     @Override
     public void addEdge(Node node1, Node node2){
-        Edge edge = new Edge(node1, node2);
-        this.addEdge(edge);
+        Node node1Reel = this.getNodeFromPos(node1);
+        if (node1Reel == node1){ this.addNode(node1); }
+        Node node2Reel = this.getNodeFromPos(node2);
+        if (node2Reel == node2){ this.addNode(node2); }
+
+        this.neighbors.get(node1Reel).add(node2Reel);
+        this.neighbors.get(node2Reel).add(node1Reel); // Graphe non-orienté
+        this.edges.add(new Edge(node1Reel,node2Reel));
     }
 
     @Override
