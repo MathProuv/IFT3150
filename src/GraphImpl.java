@@ -32,12 +32,11 @@ public class GraphImpl implements Graph{
     }
 
     @Override
-    public Node addNode(Node node){
-        if (node == this.getNodeFromPos(node)){
+    public void addNode(Node node){
+        if (node == this.getNodeFromPos(node)){ // un node existait déjà ici
             this.nodes.add(node);
-            this.neighbors.put(node, new ArrayList<Node>());
+            this.neighbors.put(node, new ArrayList<>());
         }
-        return node;
     }
 
     @Override
@@ -74,6 +73,9 @@ public class GraphImpl implements Graph{
 
     @Override
     public boolean removeNode(Node node) {
+        for (Node nodeIn : this.nodes) {
+            this.neighbors.get(nodeIn).remove(node);
+        }
         return this.nodes.remove(node);
     }
 
@@ -88,11 +90,11 @@ public class GraphImpl implements Graph{
     }
 
     public void draw(GraphicsContext context){
-        for (Edge edge : edges) {
-            edge.draw(context);
-        }
         for (Node node : nodes) {
             node.draw(context);
+            for (Node neighbor : neighbors.get(node)) {
+                new Edge(node,neighbor).draw(context);
+            }
         }
     }
 }

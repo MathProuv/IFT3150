@@ -27,15 +27,29 @@ public class Controleur {
         this.graph.addNode(node);
     }
 
+    public void removeNode(Node node){
+        Node nodeReel = this.graph.getNodeFromPos(node);
+        if (node == nodeReel){ //new node
+
+        } else {
+            this.graph.removeNode(nodeReel);
+        }
+    }
+
+    public void moveNode(Node node, int xNew, int yNew){
+        Node nodeReel = this.graph.getNodeFromPos(node);
+        if (node == nodeReel){ //new node
+
+        } else {
+            nodeReel.move(xNew, yNew);
+        }
+    }
+
     public void addEdge(Node node1, Node node2){
         this.graph.addEdge(node1, node2);
     }
 
-    public void rmNode(Node node){
-        this.graph.removeNode(node);
-    }
-
-    public void rmEdge(Edge edge){
+    public void removeEdge(Edge edge){
         this.graph.removeEdge(edge);
     }
 

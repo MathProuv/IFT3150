@@ -5,11 +5,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -19,9 +17,10 @@ public class Vue extends Application {
     private final Controleur controleur = new Controleur(this);
     private Stage primaryStage;
 
+    private Canvas canvas;
+
     // on garde en mémoire la dernière position de l'entrée dans un click
     private Node node1;
-    private boolean modifGraph;
 
     public static void main(String[] args) { launch(args); }
 
@@ -36,25 +35,25 @@ public class Vue extends Application {
         primaryStage.show();
     }
 
+
     private Scene creerSceneModif() {
         primaryStage.setTitle("Cops & Robbers - Création du graphe");
-        this.modifGraph = true;
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
 
         VBox options = new VBox();
-        CheckBox createButton = new CheckBox("Modification du graphe");
-        createButton.setSelected(true); //default checked
+        CheckBox modifButton = new CheckBox("Modification des noeuds");
+        CheckBox suppButton = new CheckBox("Suppression d'un noeud");
 
-        Button playButton = new Button("Jouer");
+        Button playButton = new Button("Positionner les personnages");
         playButton.setOnMouseClicked(click -> {
-            this.modifGraph = false;;
             this.primaryStage.setScene(this.creerSceneInit());
         });
 
-        options.getChildren().addAll(createButton, playButton);
+        options.getChildren().addAll(modifButton, suppButton, playButton);
 
         Canvas canvas = new Canvas(widthCanvas,heightCanvas);
+        this.canvas = canvas;
         GraphicsContext context = canvas.getGraphicsContext2D();
         this.controleur.draw(context);
 
@@ -64,19 +63,31 @@ public class Vue extends Application {
 
         canvas.setOnMousePressed(click -> {
             this.node1 = new Node((int) click.getX(), (int) click.getY());
-            this.controleur.addNode(node1);
+            if (modifButton.isSelected()){ //Modifier un noeud
+
+            } else { //Ajouter un noeud
+                this.controleur.addNode(node1);
+            }
             this.controleur.draw(context);
         });
+
         canvas.setOnMouseReleased(click -> {
             Node node2 = new Node((int) click.getX(), (int) click.getY());
-            if (!this.node1.isEqual(node2)) {
-                this.controleur.addEdge(this.node1, node2);
+            if (modifButton.isSelected()){ //Modifier un noeud
+                this.controleur.moveNode(node1,(int) click.getX(), (int) click.getY());
+            } else if(suppButton.isSelected()) { //Supprimer un noeud
+                this.controleur.removeNode(node1);
+            } else { //Ajouter un noeud
+                if (!this.node1.isEqual(node2)) {
+                    this.controleur.addEdge(this.node1, node2);
+                }
             }
             this.controleur.draw(context);
         });
 
         return scene;
     }
+
 
     private Scene creerSceneInit() {
         primaryStage.setTitle("Cops & Robbers - Initialisation des personnages");
@@ -105,6 +116,7 @@ public class Vue extends Application {
         options.getChildren().addAll(backButton, perso, persoGentil, playButton);
 
         Canvas canvas = new Canvas(widthCanvas,heightCanvas);
+        this.canvas = canvas;
         GraphicsContext context = canvas.getGraphicsContext2D();
         this.controleur.draw(context);
 
@@ -137,6 +149,7 @@ public class Vue extends Application {
         options.getChildren().addAll(backButton);
 
         Canvas canvas = new Canvas(widthCanvas,heightCanvas);
+        this.canvas = canvas;
         GraphicsContext context = canvas.getGraphicsContext2D();
         this.controleur.draw(context);
 

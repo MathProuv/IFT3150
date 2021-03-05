@@ -4,7 +4,7 @@ public interface Graph {
     boolean contains(Node node);
     Node getNodeFromPos(Node pos);
     boolean contains(Edge edge);
-    Node addNode(Node node);
+    void addNode(Node node);
     void addEdge(Edge edge);
     void addEdge(Node node1, Node Node2);
     boolean removeNode(Node node);
