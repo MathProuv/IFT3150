@@ -13,6 +13,10 @@ Il y a aussi besoin du module javafx.controls : sous IntelliJ, il faut l'ajouter
 
 ---
 
+# 23 février
+
+J'ai un graphe en background. Je ne suis pas sûre de comment le garder en mémoire : matrice d'adjacence ? liste d'edges ?
+
 # 28 février
 
 J'arrive à dessiner un graphe
