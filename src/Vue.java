@@ -162,6 +162,10 @@ public class Vue extends Application {
         GraphicsContext context = canvas.getGraphicsContext2D();
         this.controleur.draw(context);
 
+        canvas.setOnMouseClicked(click -> {
+
+        });
+
         root.getChildren().addAll(options,canvas);
         StackPane.setAlignment(options, Pos.CENTER_LEFT);
         StackPane.setAlignment(canvas, Pos.CENTER_RIGHT);

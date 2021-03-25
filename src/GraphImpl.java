@@ -2,7 +2,6 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class GraphImpl implements Graph{
     private final ArrayList<Node> nodes;

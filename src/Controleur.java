@@ -49,10 +49,6 @@ public class Controleur {
         this.graph.addEdge(node1, node2);
     }
 
-    public void removeEdge(Edge edge){
-        this.graph.removeEdge(edge);
-    }
-
     public void addPerso(Node pos, boolean gentil){
         Node posReel = this.graph.getNodeFromPos(pos);
         try{
