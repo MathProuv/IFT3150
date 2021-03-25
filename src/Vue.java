@@ -16,6 +16,7 @@ public class Vue extends Application {
     public final int widthCanvas = Math.min(width,height), heightCanvas = widthCanvas;
     private final Controleur controleur = new Controleur(this);
     private Stage primaryStage;
+    private String title = "Cops & Robbers";
 
     private Canvas canvas;
 
@@ -27,7 +28,7 @@ public class Vue extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
-        primaryStage.setTitle("Cops & Robbers - Menu");
+        primaryStage.setTitle(title);
         primaryStage.setResizable(false);
         primaryStage.setScene(creerSceneModif());
         Image icone = new Image("/images/police-man-caught-robber.jpg");
@@ -37,13 +38,19 @@ public class Vue extends Application {
 
 
     private Scene creerSceneModif() {
-        primaryStage.setTitle("Cops & Robbers - Création du graphe");
+        this.title = "Cops & Robbers - Création du graphe";
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
 
         VBox options = new VBox();
         CheckBox modifButton = new CheckBox("Modification des noeuds");
         CheckBox suppButton = new CheckBox("Suppression d'un noeud");
+        modifButton.setOnAction(click -> {
+            suppButton.setSelected(false);
+        });
+        suppButton.setOnAction(click -> {
+            modifButton.setSelected(false);
+        });
 
         Button playButton = new Button("Positionner les personnages");
         playButton.setOnMouseClicked(click -> {
@@ -65,6 +72,8 @@ public class Vue extends Application {
             this.node1 = new Node((int) click.getX(), (int) click.getY());
             if (modifButton.isSelected()){ //Modifier un noeud
 
+            } else if(suppButton.isSelected()) { //Supprimer un noeud
+                
             } else { //Ajouter un noeud
                 this.controleur.addNode(node1);
             }
@@ -90,7 +99,7 @@ public class Vue extends Application {
 
 
     private Scene creerSceneInit() {
-        primaryStage.setTitle("Cops & Robbers - Initialisation des personnages");
+        this.title = "Cops & Robbers - Initialisation des personnages";
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
 

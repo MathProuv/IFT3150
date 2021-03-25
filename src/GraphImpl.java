@@ -16,7 +16,7 @@ public class GraphImpl implements Graph{
     }
 
     @Override
-    public boolean contains(Node node) {
+    public boolean containsNode(Node node) {
         return node == this.getNodeFromPos(node);
     }
 
@@ -40,23 +40,8 @@ public class GraphImpl implements Graph{
     }
 
     @Override
-    public boolean contains(Edge edge) {
-        for (Edge edgeIn : this.edges) {
-            if (edge.isEqual(edgeIn)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void addEdge(Edge edge) {
-        if (!this.contains(edge)) {
-            Iterator<Node> nodeIter = edge.getNodesIter();
-            Node node1 = nodeIter.next();
-            Node node2 = nodeIter.next();
-            this.addEdge(node1, node2);
-        }
+    public boolean containsEdge(Node node1, Node node2) {
+        return this.neighbors.get(node1).contains(node2);
     }
 
     @Override
@@ -80,13 +65,8 @@ public class GraphImpl implements Graph{
     }
 
     @Override
-    public boolean removeEdge(Edge edge) {
-        return this.edges.remove(edge);
-    }
-
-    @Override
     public boolean removeEdge(Node node1, Node node2) {
-        return this.removeEdge(new Edge(node1,node2));
+        return this.edges.remove(new Edge(node1,node2));
     }
 
     public void draw(GraphicsContext context){

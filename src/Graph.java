@@ -1,14 +1,14 @@
 import javafx.scene.canvas.GraphicsContext;
 
 public interface Graph {
-    boolean contains(Node node);
     Node getNodeFromPos(Node pos);
-    boolean contains(Edge edge);
+    boolean containsNode(Node node);
     void addNode(Node node);
-    void addEdge(Edge edge);
-    void addEdge(Node node1, Node Node2);
     boolean removeNode(Node node);
-    boolean removeEdge(Edge edge);
+
+    boolean containsEdge(Node node1, Node Node2);
+    void addEdge(Node node1, Node Node2);
     boolean removeEdge(Node node1, Node node2);
+
     void draw(GraphicsContext context);
 }
