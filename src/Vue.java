@@ -71,9 +71,9 @@ public class Vue extends Application {
         canvas.setOnMousePressed(click -> {
             this.node1 = new Node((int) click.getX(), (int) click.getY());
             if (modifButton.isSelected()){ //Modifier un noeud
-
+                //Todo
             } else if(suppButton.isSelected()) { //Supprimer un noeud
-                
+                //Todo
             } else { //Ajouter un noeud
                 this.controleur.addNode(node1);
             }
