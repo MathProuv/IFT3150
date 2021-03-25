@@ -4,8 +4,8 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 public class Controleur {
-    private Graph graph;
-    private Vue vue;
+    private final Graph graph;
+    private final Vue vue;
 
     private final ArrayList<Perso> persos = new ArrayList<>();
 
@@ -50,6 +50,7 @@ public class Controleur {
     }
 
     public void addPerso(Node pos, boolean gentil){
+        // Pas possible d'avoir 2 persos au même endroit
         Node posReel = this.graph.getNodeFromPos(pos);
         try{
             if (posReel == pos) {
@@ -67,10 +68,37 @@ public class Controleur {
         }
         this.persos.add(perso);
     }
+
     public void addCop(Node pos){
         this.addPerso(pos, true);
     }
     public void addRobber(Node pos){
         this.addPerso(pos, false);
+    }
+
+    public Perso getPerso(Node pos){
+        Node posReel = this.graph.getNodeFromPos(pos);
+        for (Perso perso : this.persos) {
+            if (perso.pos == posReel){
+                return perso;
+            }
+        }
+        return null;
+    }
+
+    public void movePerso(Node pos, Node newPos){
+        Node posReel = this.graph.getNodeFromPos(pos);
+        Perso persoReel = null;
+        for (Perso perso : this.persos) {
+            if (perso.pos == posReel){
+                persoReel = perso;
+            }
+        }
+        Node newPosReel = this.graph.getNodeFromPos(newPos);
+        if (persoReel == null){ // pas de perso à déplacer
+
+        } else {
+            persoReel.move(newPosReel);
+        }
     }
 }

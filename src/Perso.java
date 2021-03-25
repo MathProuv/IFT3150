@@ -1,18 +1,17 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public abstract class Perso implements Personnage{
     protected Node pos;
-    private boolean role; // true=Cop, false=Robber
+    private boolean roleGentil; // true=Cop, false=Robber
     protected Image dessin;
     protected final int sizeImage = 20;
     protected Color color;
 
     public Perso(Node pos, boolean roleGentil){
         this.pos = pos;
-        this.role = roleGentil;
+        this.roleGentil = roleGentil;
         this.dessin = null;
     }
 
@@ -22,8 +21,14 @@ public abstract class Perso implements Personnage{
     }
 
     public void draw(GraphicsContext context){
-        //context.drawImage(this.dessin,this.pos.getX()-this.sizeImage/2,this.pos.getY()-this.sizeImage/2);
         context.setFill(this.color);
         context.fillOval(this.pos.getX()-this.sizeImage/2,this.pos.getY()-this.sizeImage/2,this.sizeImage,this.sizeImage);
+        //context.drawImage(this.dessin,this.pos.getX()-this.sizeImage/2,this.pos.getY()-this.sizeImage/2);
+    }
+
+    @Override
+    public String toString(){
+        String res = this.roleGentil ? "Cop " : "Robber ";
+        return res + this.pos;
     }
 }

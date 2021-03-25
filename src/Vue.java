@@ -39,6 +39,7 @@ public class Vue extends Application {
 
     private Scene creerSceneModif() {
         this.title = "Cops & Robbers - Création du graphe";
+        primaryStage.setTitle(this.title);
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
 
@@ -54,7 +55,7 @@ public class Vue extends Application {
 
         Button playButton = new Button("Positionner les personnages");
         playButton.setOnMouseClicked(click -> {
-            this.primaryStage.setScene(this.creerSceneInit());
+            this.primaryStage.setScene(this.creerSceneInitPerso());
         });
 
         options.getChildren().addAll(modifButton, suppButton, playButton);
@@ -98,8 +99,9 @@ public class Vue extends Application {
     }
 
 
-    private Scene creerSceneInit() {
+    private Scene creerSceneInitPerso() {
         this.title = "Cops & Robbers - Initialisation des personnages";
+        primaryStage.setTitle(this.title);
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
 
@@ -143,7 +145,8 @@ public class Vue extends Application {
     }
 
     public Scene creerSceneJeu() {
-        primaryStage.setTitle("Cops & Robbers");
+        this.title = "Cops & Robbers";
+        primaryStage.setTitle(this.title);
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
 
@@ -162,8 +165,15 @@ public class Vue extends Application {
         GraphicsContext context = canvas.getGraphicsContext2D();
         this.controleur.draw(context);
 
-        canvas.setOnMouseClicked(click -> {
+        canvas.setOnMousePressed(click -> {
+            this.node1 = new Node((int) click.getX(), (int) click.getY());
 
+        });
+        canvas.setOnMouseReleased(click -> {
+            Node node2 = new Node((int) click.getX(), (int) click.getY());
+            //Perso perso1 = this.controleur.getPerso(this.node1);
+            this.controleur.movePerso(node1,node2);
+            this.controleur.draw(context);
         });
 
         root.getChildren().addAll(options,canvas);

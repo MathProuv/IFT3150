@@ -48,6 +48,9 @@ public class Node {
 
     @Override
     public String toString(){
+        if (this.name != null){
+            return this.name;
+        }
         return String.valueOf(this.x) + "," + String.valueOf(this.y);
     }
 }
