@@ -4,14 +4,15 @@ import javafx.scene.paint.Color;
 
 public abstract class Perso implements Personnage{
     protected Node pos;
-    private boolean roleGentil; // true=Cop, false=Robber
+    private final boolean gentil; // true=Cop, false=Robber
+
     protected Image dessin;
     protected final int sizeImage = 20;
     protected Color color;
 
-    public Perso(Node pos, boolean roleGentil){
+    public Perso(Node pos, boolean gentil){
         this.pos = pos;
-        this.roleGentil = roleGentil;
+        this.gentil = gentil;
         this.dessin = null;
     }
 
@@ -28,7 +29,11 @@ public abstract class Perso implements Personnage{
 
     @Override
     public String toString(){
-        String res = this.roleGentil ? "Cop " : "Robber ";
+        String res = this.gentil ? "Cop " : "Robber ";
         return res + this.pos;
+    }
+
+    public boolean isGentil() {
+        return gentil;
     }
 }

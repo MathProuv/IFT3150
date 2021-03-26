@@ -27,22 +27,16 @@ public class Controleur {
         this.graph.addNode(node);
     }
 
-    public void removeNode(Node node){
+    public void moveNode(Node node, int xNew, int yNew){
         Node nodeReel = this.graph.getNodeFromPos(node);
-        if (node == nodeReel){ //new node
-
-        } else {
-            this.graph.removeNode(nodeReel);
+        if (nodeReel != null){ // pas un new node
+            nodeReel.move(xNew, yNew);
         }
     }
 
-    public void moveNode(Node node, int xNew, int yNew){
+    public void removeNode(Node node){
         Node nodeReel = this.graph.getNodeFromPos(node);
-        if (node == nodeReel){ //new node
-
-        } else {
-            nodeReel.move(xNew, yNew);
-        }
+        this.graph.removeNode(nodeReel);
     }
 
     public void addEdge(Node node1, Node node2){
@@ -50,11 +44,12 @@ public class Controleur {
     }
 
     public void addPerso(Node pos, boolean gentil){
-        // Pas possible d'avoir 2 persos au même endroit
         Node posReel = this.graph.getNodeFromPos(pos);
         try{
-            if (posReel == pos) {
+            if (posReel == null) {
                 throw new Exception("cette position n'existe pas");
+            } else if (this.getPerso(posReel) != null){
+                throw new Exception("il y a déjà un perso ici");
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -78,6 +73,9 @@ public class Controleur {
 
     public Perso getPerso(Node pos){
         Node posReel = this.graph.getNodeFromPos(pos);
+        if (posReel == null) {
+            return null;
+        }
         for (Perso perso : this.persos) {
             if (perso.pos == posReel){
                 return perso;
@@ -88,17 +86,45 @@ public class Controleur {
 
     public void movePerso(Node pos, Node newPos){
         Node posReel = this.graph.getNodeFromPos(pos);
-        Perso persoReel = null;
-        for (Perso perso : this.persos) {
-            if (perso.pos == posReel){
-                persoReel = perso;
-            }
-        }
         Node newPosReel = this.graph.getNodeFromPos(newPos);
-        if (persoReel == null){ // pas de perso à déplacer
-
-        } else {
-            persoReel.move(newPosReel);
+        Perso perso = this.getPerso(posReel);
+        try {
+            if (posReel == newPosReel) {
+                throw new Exception("on ne bouge pas");
+            } else if (perso == null){
+                throw new Exception("on n'a rien à bouger");
+            } else if (newPosReel == null) { // || posReel == null) { //déjà catché dans perso == null
+                throw new Exception("cette position n'existe pas");
+            } else if (!this.graph.isNeighbors(posReel,newPosReel)){
+                throw new Exception("ces noeuds ne sont pas connectés");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return;
         }
+        Perso perso2 = this.getPerso(newPosReel);
+        perso.move(newPosReel);
+        System.out.println(perso);
+        System.out.println(perso2);
+
+        if (perso2 != null && perso.isGentil() != perso2.isGentil()){
+            this.perdu();
+        }
+    }
+
+    public void removePerso(Node pos){
+        Perso perso = this.getPerso(pos);
+        this.persos.remove(perso);
+    }
+
+    public void perdu(){
+        this.vue.changeSceneToPerdu();
+    }
+
+    public void soutPerso(){
+        for (Perso perso : this.persos) {
+            System.out.println(perso);
+        }
+        System.out.println();
     }
 }

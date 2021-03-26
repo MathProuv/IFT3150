@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -29,14 +30,14 @@ public class Vue extends Application {
         this.primaryStage = primaryStage;
         primaryStage.setTitle(title);
         primaryStage.setResizable(false);
-        primaryStage.setScene(creerSceneModif());
+        changeSceneToModif();
         Image icone = new Image("/images/police-man-caught-robber.jpg");
         primaryStage.getIcons().add(icone);
         primaryStage.show();
     }
 
 
-    Scene creerSceneModif() {
+    void changeSceneToModif() {
         this.title = "Cops & Robbers - Création du graphe";
         primaryStage.setTitle(this.title);
         StackPane root = new StackPane();
@@ -51,11 +52,12 @@ public class Vue extends Application {
         modifButton.setToggleGroup(mode);
         suppButton.setToggleGroup(mode);
         ajoutButton.setSelected(true);
+        options.getChildren().addAll(ajoutButton, modifButton, suppButton);
 
         Button playButton = new Button("Positionner les personnages");
-        playButton.setOnMouseClicked(click -> this.primaryStage.setScene(this.creerSceneInitPerso()));
+        playButton.setOnMouseClicked(click -> changeSceneToPerso());
 
-        options.getChildren().addAll(ajoutButton, modifButton, suppButton, playButton);
+        options.getChildren().addAll(playButton);
 
         Canvas canvas = new Canvas(widthCanvas,heightCanvas);
         this.canvas = canvas;
@@ -68,10 +70,10 @@ public class Vue extends Application {
 
         canvas.setOnMousePressed(click -> {
             this.node1 = new Node((int) click.getX(), (int) click.getY());
-            if (!modifButton.isSelected() && !suppButton.isSelected()) {//Ajouter un noeud
+            if (ajoutButton.isSelected()) {//Ajouter un noeud
                 this.controleur.addNode(node1);
+                this.controleur.draw(context);
             }
-            this.controleur.draw(context);
         });
 
         canvas.setOnMouseReleased(click -> {
@@ -88,25 +90,32 @@ public class Vue extends Application {
             this.controleur.draw(context);
         });
 
-        return scene;
+        this.primaryStage.setScene(scene);
     }
 
 
-    Scene creerSceneInitPerso() {
+    void changeSceneToPerso() {
         this.title = "Cops & Robbers - Initialisation des personnages";
         primaryStage.setTitle(this.title);
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
 
         VBox options = new VBox();
+        RadioButton ajoutButton = new RadioButton("Ajout d'un personnage");
+        RadioButton suppButton = new RadioButton("Suppression d'un personnage");
+        ToggleGroup mode = new ToggleGroup();
+        ajoutButton.setToggleGroup(mode);
+        suppButton.setToggleGroup(mode);
+        ajoutButton.setSelected(true);
+        options.getChildren().addAll(ajoutButton, suppButton);
 
         // Back to modification du graphe
         Button backButton = new Button("Modification du graphe");
-        backButton.setOnMouseClicked(click -> this.primaryStage.setScene(this.creerSceneModif()));
+        backButton.setOnMouseClicked(click -> changeSceneToModif());
 
         // Jeu
         Button playButton = new Button("Je suis prêt.e");
-        playButton.setOnMouseClicked(click -> this.primaryStage.setScene(this.creerSceneJeu()));
+        playButton.setOnMouseClicked(click -> this.changeSceneToJeu());
 
         Text perso = new Text();
         perso.setText("Add perso");
@@ -122,18 +131,23 @@ public class Vue extends Application {
 
         canvas.setOnMouseClicked(click -> {
             Node pos = new Node((int) click.getX(), (int) click.getY());
-            this.controleur.addPerso(pos, persoGentil.isSelected());
+            if(suppButton.isSelected()) { //Supprimer un perso
+                this.controleur.removePerso(pos);
+            } else { //Ajouter un perso
+                this.controleur.addPerso(pos, persoGentil.isSelected());
+            }
             this.controleur.draw(context);
+            this.controleur.soutPerso();
         });
 
         root.getChildren().addAll(options,canvas);
         StackPane.setAlignment(options, Pos.CENTER_LEFT);
         StackPane.setAlignment(canvas, Pos.CENTER_RIGHT);
 
-        return scene;
+        this.primaryStage.setScene(scene);
     }
 
-    Scene creerSceneJeu() {
+    void changeSceneToJeu() {
         this.title = "Cops & Robbers";
         primaryStage.setTitle(this.title);
         StackPane root = new StackPane();
@@ -143,7 +157,7 @@ public class Vue extends Application {
 
         // Back to modification du graphe
         Button backButton = new Button("Modification du graphe");
-        backButton.setOnMouseClicked(click -> this.primaryStage.setScene(this.creerSceneModif()));
+        backButton.setOnMouseClicked(click -> this.changeSceneToModif());
 
         options.getChildren().addAll(backButton);
 
@@ -164,6 +178,32 @@ public class Vue extends Application {
         StackPane.setAlignment(options, Pos.CENTER_LEFT);
         StackPane.setAlignment(canvas, Pos.CENTER_RIGHT);
 
-        return scene;
+        this.primaryStage.setScene(scene);
+    }
+
+    void changeSceneToPerdu() {
+        this.title = "Cops & Robbers - Cops a gagné !";
+        primaryStage.setTitle(this.title);
+        StackPane root = new StackPane();
+        Scene scene = new Scene(root,width,height);
+
+        VBox options = new VBox();
+
+        // Back to modification du graphe
+        Button backModifButton = new Button("Modification du graphe");
+        backModifButton.setOnMouseClicked(click -> changeSceneToModif());
+        // Back to modification du graphe
+        Button backPersoButton = new Button("Modification des personnages");
+        backPersoButton.setOnMouseClicked(click -> changeSceneToPerso());
+
+        options.getChildren().addAll(backModifButton,backPersoButton);
+
+        ImageView canvas = new ImageView("images/police-man-caught-robber.jpg");
+
+        root.getChildren().addAll(options,canvas);
+        StackPane.setAlignment(options, Pos.CENTER_LEFT);
+        StackPane.setAlignment(canvas, Pos.CENTER_RIGHT);
+
+        this.primaryStage.setScene(scene);
     }
 }
