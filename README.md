@@ -30,3 +30,13 @@ J'ai créé plusieurs scènes pour :
 3. Jouer
 
 La dernière scène n'est pas au point, c'est ce sur quoi je dois encore travailler.
+
+# 26 mars
+
+J'arrive à déplacer mes personnages ! Ma scène Jouer est fonctionnelle, mais il faut que je trouve une façon d'alterner les tours des cops et du robber.
+
+Il faudrait que je trouve un moyen de toujours mettre un unique cop.
+
+Ma logique/syntaxe est plus proche des conventions.
+
+
