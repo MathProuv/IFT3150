@@ -3,8 +3,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -26,7 +25,7 @@ public class Vue extends Application {
     public static void main(String[] args) { launch(args); }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage){
         this.primaryStage = primaryStage;
         primaryStage.setTitle(title);
         primaryStage.setResizable(false);
@@ -37,28 +36,26 @@ public class Vue extends Application {
     }
 
 
-    private Scene creerSceneModif() {
+    Scene creerSceneModif() {
         this.title = "Cops & Robbers - Création du graphe";
         primaryStage.setTitle(this.title);
         StackPane root = new StackPane();
         Scene scene = new Scene(root,width,height);
 
         VBox options = new VBox();
-        CheckBox modifButton = new CheckBox("Modification des noeuds");
-        CheckBox suppButton = new CheckBox("Suppression d'un noeud");
-        modifButton.setOnAction(click -> {
-            suppButton.setSelected(false);
-        });
-        suppButton.setOnAction(click -> {
-            modifButton.setSelected(false);
-        });
+        RadioButton ajoutButton = new RadioButton("Ajout de noeuds ou d'arêtes");
+        RadioButton modifButton = new RadioButton("Modification de noeud");
+        RadioButton suppButton = new RadioButton("Suppression de noeud");
+        ToggleGroup mode = new ToggleGroup();
+        ajoutButton.setToggleGroup(mode);
+        modifButton.setToggleGroup(mode);
+        suppButton.setToggleGroup(mode);
+        ajoutButton.setSelected(true);
 
         Button playButton = new Button("Positionner les personnages");
-        playButton.setOnMouseClicked(click -> {
-            this.primaryStage.setScene(this.creerSceneInitPerso());
-        });
+        playButton.setOnMouseClicked(click -> this.primaryStage.setScene(this.creerSceneInitPerso()));
 
-        options.getChildren().addAll(modifButton, suppButton, playButton);
+        options.getChildren().addAll(ajoutButton, modifButton, suppButton, playButton);
 
         Canvas canvas = new Canvas(widthCanvas,heightCanvas);
         this.canvas = canvas;
@@ -71,11 +68,7 @@ public class Vue extends Application {
 
         canvas.setOnMousePressed(click -> {
             this.node1 = new Node((int) click.getX(), (int) click.getY());
-            if (modifButton.isSelected()){ //Modifier un noeud
-                //Todo
-            } else if(suppButton.isSelected()) { //Supprimer un noeud
-                //Todo
-            } else { //Ajouter un noeud
+            if (!modifButton.isSelected() && !suppButton.isSelected()) {//Ajouter un noeud
                 this.controleur.addNode(node1);
             }
             this.controleur.draw(context);
@@ -99,7 +92,7 @@ public class Vue extends Application {
     }
 
 
-    private Scene creerSceneInitPerso() {
+    Scene creerSceneInitPerso() {
         this.title = "Cops & Robbers - Initialisation des personnages";
         primaryStage.setTitle(this.title);
         StackPane root = new StackPane();
@@ -109,15 +102,11 @@ public class Vue extends Application {
 
         // Back to modification du graphe
         Button backButton = new Button("Modification du graphe");
-        backButton.setOnMouseClicked(click -> {
-            this.primaryStage.setScene(this.creerSceneModif());
-        });
+        backButton.setOnMouseClicked(click -> this.primaryStage.setScene(this.creerSceneModif()));
 
         // Jeu
         Button playButton = new Button("Je suis prêt.e");
-        playButton.setOnMouseClicked(click -> {
-            this.primaryStage.setScene(this.creerSceneJeu());
-        });
+        playButton.setOnMouseClicked(click -> this.primaryStage.setScene(this.creerSceneJeu()));
 
         Text perso = new Text();
         perso.setText("Add perso");
@@ -144,7 +133,7 @@ public class Vue extends Application {
         return scene;
     }
 
-    public Scene creerSceneJeu() {
+    Scene creerSceneJeu() {
         this.title = "Cops & Robbers";
         primaryStage.setTitle(this.title);
         StackPane root = new StackPane();
@@ -154,9 +143,7 @@ public class Vue extends Application {
 
         // Back to modification du graphe
         Button backButton = new Button("Modification du graphe");
-        backButton.setOnMouseClicked(click -> {
-            this.primaryStage.setScene(this.creerSceneModif());
-        });
+        backButton.setOnMouseClicked(click -> this.primaryStage.setScene(this.creerSceneModif()));
 
         options.getChildren().addAll(backButton);
 
@@ -165,10 +152,7 @@ public class Vue extends Application {
         GraphicsContext context = canvas.getGraphicsContext2D();
         this.controleur.draw(context);
 
-        canvas.setOnMousePressed(click -> {
-            this.node1 = new Node((int) click.getX(), (int) click.getY());
-
-        });
+        canvas.setOnMousePressed(click -> this.node1 = new Node((int) click.getX(), (int) click.getY()));
         canvas.setOnMouseReleased(click -> {
             Node node2 = new Node((int) click.getX(), (int) click.getY());
             //Perso perso1 = this.controleur.getPerso(this.node1);
