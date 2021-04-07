@@ -116,6 +116,7 @@ public class Controleur {
     }
 
     public void perdu(){
+        this.persos.clear();
         this.vue.changeSceneToPerdu();
     }
 

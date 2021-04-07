@@ -7,7 +7,8 @@ public abstract class Perso implements Personnage{
     private final boolean gentil; // true=Cop, false=Robber
 
     protected Image dessin;
-    protected final int sizeImage = 20;
+    protected final int sizeCircle = 20;
+    protected final int sizeImage = 2*sizeCircle;
     protected Color color;
 
     public Perso(Node pos, boolean gentil){
@@ -23,8 +24,8 @@ public abstract class Perso implements Personnage{
 
     public void draw(GraphicsContext context){
         context.setFill(this.color);
-        context.fillOval(this.pos.getX()-this.sizeImage/2,this.pos.getY()-this.sizeImage/2,this.sizeImage,this.sizeImage);
-        //context.drawImage(this.dessin,this.pos.getX()-this.sizeImage/2,this.pos.getY()-this.sizeImage/2);
+        //context.fillOval(this.pos.getX()-this.sizeCircle/2,this.pos.getY()-this.sizeCircle/2,this.sizeCircle,this.sizeCircle);
+        context.drawImage(this.dessin,this.pos.getX()-this.sizeImage/2,this.pos.getY()-this.sizeImage/2);
     }
 
     @Override
