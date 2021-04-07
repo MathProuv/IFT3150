@@ -104,8 +104,6 @@ public class Controleur {
         }
         Perso perso2 = this.getPerso(newPosReel);
         perso.move(newPosReel);
-        System.out.println(perso);
-        System.out.println(perso2);
 
         if (perso2 != null && perso.isGentil() != perso2.isGentil()){
             this.perdu();

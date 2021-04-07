@@ -16,7 +16,7 @@ public class GraphImpl implements Graph{
 
     @Override
     public boolean containsNode(Node node) {
-        return node == this.getNodeFromPos(node);
+        return this.getNodeFromPos(node) != null;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class GraphImpl implements Graph{
 
     @Override
     public void addNode(Node node){
-        if (this.getNodeFromPos(node) == null){ // un node n'existait pas encore ici
+        if (!this.containsNode(node)){ // un node n'existait pas encore ici
             this.nodes.add(node);
             this.neighbors.put(node, new ArrayList<>());
         }

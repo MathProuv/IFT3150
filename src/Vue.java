@@ -137,7 +137,6 @@ public class Vue extends Application {
                 this.controleur.addPerso(pos, persoGentil.isSelected());
             }
             this.controleur.draw(context);
-            this.controleur.soutPerso();
         });
 
         root.getChildren().addAll(options,canvas);
