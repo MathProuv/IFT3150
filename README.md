@@ -39,4 +39,6 @@ Il faudrait que je trouve un moyen de toujours mettre un unique cop.
 
 Ma logique/syntaxe est plus proche des conventions.
 
+# 20 avril
 
+Dévut de la rédaction du rapport
