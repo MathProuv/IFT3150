@@ -1,0 +1,26 @@
+\documentclass[tikz]{standalone}
+\begin{document}
+\begin{tikzpicture}
+\node [draw,circle,fill=vert] (v2) at (0,0) {};
+\node [draw,circle,fill=black] (v1) at (-1,-1) {};
+\node [draw,circle,fill=black] (v3) at (1,-1) {};
+\node [draw,circle,fill=black] (v4) at (-2,-1) {};
+\node [draw,circle,fill=black] (v7) at (2,-1) {};
+\node [draw,circle,fill=black] (v5) at (0,-2) {};
+\node [draw,circle,fill=red] (v6) at (0,1) {};
+\draw  (v1) edge (v2);
+\draw  (v2) edge (v3);
+\draw  (v3) edge (v1);
+\draw  (v2) edge (v4);
+\draw  (v4) edge (v5);
+\draw  (v4) edge (v1);
+\draw  (v4) edge (v6);
+\draw  (v6) edge (v2);
+\draw  (v6) edge (v7);
+\draw  (v5) edge (v7);
+\draw  (v1) edge (v5);
+\draw  (v3) edge (v5);
+\draw  (v2) edge (v7);
+\draw  (v7) edge (v3);
+\end{tikzpicture}
+\end{document}

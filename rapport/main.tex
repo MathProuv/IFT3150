@@ -1,0 +1,210 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{csquotes}
+\usepackage{comment}
+\usepackage{url}
+\usepackage{lmodern}
+\usepackage{amssymb,amstext,amsmath,amsthm}
+\usepackage{graphicx,xcolor}
+\usepackage{array}
+\usepackage[margin=2cm]{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage[lofdepth,lotdepth]{subfig}
+\setcounter{secnumdepth}{0}
+
+\usepackage{tikz}
+%\usetikzlibrary{arrows,decorations.pathmorphing}
+\usepackage{standalone}
+\usepackage{subfig, subfigure}
+\usepackage{caption, subcaption}
+%\usepackage{tabularx}
+
+\definecolor{gris}{rgb}{0.3,0.3,0.3}
+\definecolor{vert}{rgb}{0.0, 0.4, 0.0}
+\hypersetup{
+    pdfstartview={FitH},    % fits the width of the page to the window
+    %bookmarks=false,
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=black,          % color of internal links
+    citecolor=black,        % color of links to bibliography
+    filecolor=black,      % color of file links
+    urlcolor=black,           % color of external links
+    frenchlinks=true,
+}
+
+\usepackage{xspace}
+
+\newtheorem{theoreme}{Théorème}
+
+\newcommand{\deriv}{\mathrm{d}}
+\newcommand{\dsurd}[2]{\frac{\deriv #1}{\deriv #2}}
+\newcommand{\inv}{$^{-1}$}
+\newcommand{\card}[1]{\text{Card}(#1)}
+\newcommand{\inN}[2]{\in[\![#1,#2]\!]}
+\newcommand{\bigo}{\mathcal{O}}
+
+\newcommand{\cp}{Cops \& Robbers\xspace}
+\newcommand{\hr}{Hunter \& Rabbit\xspace}
+\newcommand{\hm}{Hunter \& Mole\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+%
+%---------------------fin du préambule
+%
+\begin{document}
+\selectlanguage{french}
+%----------------------------------------------------------
+\begin{titlepage}
+\begin{center}
+
+\textsc{\Large Université de Montréal}\\[4cm]
+%
+\textsc{\LARGE Implémentation de Cops \& Robbers}\\[4cm]
+%
+\textsc{\Large Par}\\
+\textsc{\Large }\\
+\textsc{\Large Mathilde Prouvost (20164315)}\\
+\textsc{\Large }\\[3cm]
+%
+\textsc{\Large Bac Sc. Mathématiques et Informatique}\\
+\textsc{\Large Faculté des Arts et des Sciences}\\[3.5cm]
+
+\textsc{\Large Travail présenté à Sébastien Roy}\\
+\textsc{\Large dans le cadre du cours IFT3150}\\
+\textsc{\Large Projet d'informatique}\\
+\textsc{\Large supervisé par Gena Hahn}
+
+\vfill
+
+\textsc{\large Automne 2020 - Hiver 2021}
+
+\end{center}
+\end{titlepage}
+%-----------------------------------------------------------
+
+\begin{abstract}
+
+Le problème de \cp consiste à trouver le nombre minimal de policiers nécessaire pour attraper un voleur se déplaçant sur un graphe. 
+Alors qu'originalement le projet consistait en de la recherche sur ce problème, le but de ce projet est finalement d'implémenter une application permettant de visualiser le problème. L'application devra permettre de dessiner un graphe, de le modifier, de positionner des policiers et un voleur et de les faire se déplacer selon les règles.
+
+\end{abstract}
+
+\section{Introduction : vocabulaire et notations}
+
+\subsection{Les graphes}
+Un \emph{graphe} non-orienté $G$ est un couple $(V,E)$ composé de l'ensemble $V$ des sommets et de l'ensemble $E$ des arêtes (paires de sommets) tel que $E \subset \{\{u,v\}, (u,v)\in V^2\}$. On note $n=\card{V}$ le nombre de noeuds du graphe. Dans un graphe orienté, les arêtes ne sont pas $\{u,v\}$ mais $(u,v)$, i.e l'ordre importe. On peut aussi noter les arêtes $u \cdot v$ ou plus simplement $uv$.
+
+Un graphe est \emph{simple} si l'ensemble des arêtes ne contient pas de boucle, \cad pour tout $u\in V$, $u \cdot u \notin E$.
+
+Le \emph{graphe trivial} est le graphe simple $(\{u\},\varnothing)$ où $u$ est un sommet unique.
+
+Deux noeuds $u,v$ sont \emph{voisins} si $u\cdot v \in E$. Le \emph{degré} d'un noeud $u$ est le nombre de ses voisins, \cad $\card{\{v\in V, u \cdot v \in E\}}$.
+
+Une \emph{chaîne} $u-v$ entre les noeuds $u$ et $v$ est une séquence de $t>1$ noeuds voisins \cad $(u_k)_{k\inN{1}{t}}$ avec $u_1=u$, $u_t=v$ telle que $\forall k\inN{1}{t-1},\ u_{k} \cdot u_{k+1} \in E$. $t$ est appelé la \emph{longueur} de ce chemin. Pour un graphe orienté, on parle de \emph{chemin}.
+
+Un \emph{cycle} est une chaîne dont le point d'arrivée est le point de départ (chaîne $u-u$). Pour un graphe orienté, on parle de \emph{circuit}. Le $n$-cycle est le cycle de longueur $n$.
+
+Un graphe est dit \emph{connexe} si pour chaque paire de sommets $(u,v) \in V^2$ telle que $u \neq v$, il existe une chaîne reliant $u$ à $v$.
+
+Un \emph{arbre} est un graphe connexe sans cycle.
+
+\subsection{Les problèmes d'évasion}
+
+Un problème d'évasion est un problème dans lequel sont donnés un graphe, $k$ poursuivants et un évadé. Les $k+1$ personnages sont positionnés sur des noeuds du graphe et peuvent se déplacer selon les arêtes. Le but de l'évadé est de rester sur des noeuds sans poursuivant, alors que les poursuivants doivent attraper l'évadé, \cad être sur le même noeud. Les poursuivants forment une équipe, l'évadé seul une autre. Le jeu va alors être d'alterner les mouvements de chaque équipe. Le problème répond à la question \og Les $k$ poursuivants peuvent-ils attraper l'évadé en un temps fini ? \fg en essayant de trouver des stratégies qui permettent aux poursuivants d'attraper l'évadé ou au contraire des stratégies permettant à l'évadé de s'échapper. 
+
+Il en existe plusieurs variantes en fonction de différents possibilités sur le graphes et les personnages. Par exemple, le graphe peut être orienté ou non, l'ensemble des arêtes peut être différent pour les policiers que pour le voleur, les personnages peuvent avoir un champ de vision restreint du graphe, les personnages peuvent ne pas se déplacer à la même vitesse, les personnages peuvent avoir la possibilité de ne pas bouger à leur tour, les personnages peuvent connaître la stratégie adverse, etc. Le problème général de \cp se situe sur un graphe simple non-orienté. Les poursuivants sont appelés des policiers et l'évadé un voleur. Tous les personnages ont une connaissance entière du graphe. Le problème \hm se différencie du problème \cp par le fait que les poursuivants (chasseurs) ne connaissent pas la position de l'évadé (taupe), que ce dernier ne peut pas ne pas se déplacer et connaît la stratégie des poursuivants en avance. C'est principalement ce problème que j'ai étudié, à travers les papiers \cite{komarov2013hunter}, \cite{tayy2016evasion}, \cite{abramovskaya2016hunt}, \cite{britnell2012finding} et \cite{guggiari2018approximating}.
+
+La question principale de tous ces problèmes est : en fonction de caractéristiques du graphe, quel est le nombre minimal de poursuivants suffisants pour qu'ils attrapent l'évadé ? Notamment, la conjecture de Meyniel en évalue une borne supérieure sur le problème \cp à $\bigo(\sqrt{n})$.
+
+\section{Historique de mon travail}
+
+\subsection{\'Etude des problèmes d'évasion avec un unique poursuivant (\cite{komarov2015hunter})}
+
+\subsubsection{\cp avec un unique policier (\cite{nowakowski1983vertex}, 1973)}
+
+Le sommet $u$ \emph{domine} le sommet $v$ si pour chaque noeud $w$ voisin de $v$, $w$ est aussi voisin de $u$. On dit que $v$ est un \emph{coin}.
+
+Un graphe est dit \emph{pliable} s'il contient une séquence de coins qui mènent au graphe trivial.
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}{}
+        \includestandalone[mode=buildnew]{pliable1}
+    \end{subfigure}\quad\quad
+    \begin{subfigure}{}
+        \includestandalone[mode=buildnew]{pliable2}
+    \end{subfigure}\quad\quad
+    \begin{subfigure}{}
+        \includestandalone[mode=buildnew]{pliable3}
+    \end{subfigure} \\
+    \begin{subfigure}{}
+        \includestandalone[mode=buildnew]{pliable4}
+    \end{subfigure}\quad\quad
+    \begin{subfigure}{}
+        \includestandalone[mode=buildnew]{pliable5}
+    \end{subfigure}\quad\quad
+    \begin{subfigure}{}
+        \includestandalone[mode=buildnew]{pliable6}
+    \end{subfigure}\quad\quad
+    \begin{subfigure}{}
+        \includestandalone[mode=buildnew]{pliable7}
+    \end{subfigure}\quad\quad
+    \label{fig:pliable}
+    \caption{Exemple d'arbre pliable et stratégie gagnante du policier}
+\end{figure}
+
+\begin{theoreme}
+    Pour le problème \cp avec un unique poursuivant, le policier gagnera sur un certain graphe si et seulement si celui ci est pliable.
+\end{theoreme}
+
+\begin{proof}
+\boxed{\Leftarrow} Montrons d'abord que le policier gagne sur les graphes pliables.
+
+Soit $G = (V,E)$ un graphe pliable non trivial. Alors par définition, on a une suite $(u_k)_{k\inN{0}{n-1}}$ de coins menant au graphe trivial au sommet $u_{n-1}$. On peut alors utiliser les déplacements du policier suivant $(u_{n-1-k})_{k\inN{0}{n-1}}$. A ce moment, le voleur ne pourra pas s'échapper.
+
+En effet, chacun des noeuds visités par le policier ne pourra pas être atteint par le voleur après son passage sans être capturé. On peut supprimer un tel noeud dominé du graphe puisque le voleur ne pourra pas s'y rendre sans être capturé. 
+
+On procède alors par induction descendante pour atteindre le cas de base du graphe trivial.
+
+Le policier gagne sur le graphe trivial, car le voleur ne peut pas se positionner ailleurs que sur le sommet déjà occupé par le policier.
+
+\boxed{\Rightarrow} Maintenant, prouvons que si le policier gagne sur un graphe, alors ce graphe est pliable.
+
+Même s'il joue optimalement, le dernier noeud sur lequel le voleur se place est dominé par le policier, sinon il pourrait continuer à jouer. En enlevant ce noeud, le graphe doit toujours pouvoir être gagné par le policier, sinon le voleur n'emprunterait jamais ce noeud et pourrait gagner. 
+
+On procède alors par induction descendante pour atteindre le cas de base du graphe trivial, qui est bien un graphe pliable.
+\end{proof}
+
+\subsubsection{\hm avec un unique chasseur (\cite{komarov2013hunter}, 2019)}
+
+\begin{theoreme}
+    Pour le problème \hm avec un unique poursuivant, le chasseur gagnera sur un certain graphe si et seulement si celui ci est un homard.
+\end{theoreme}
+
+\subsection{Implémentation d'une application pour visualiser \cp}
+
+\section{Résultats}
+
+\section{Discussion}
+\subsection{Limitations}
+
+J'ai eu un problème de santé pendant une bonne partie de ma(mes) session(s). J'ai bien conscience que ce travail n'est pas représentatif de mes performances durant ces quelques derniers mois.
+
+\subsection{Bilan et ouverture}
+
+
+
+\bibliographystyle{ieeetr}
+\bibliography{biblio.bib}
+
+\cite{komarov2013hunter}
+\cite{Abramovskaya2016hunt} \cite{britnell2012finding} \cite{guggiari2018approximating} \cite{tayy2016evasion}
+
+%\section{Annexes}
+
+
+\end{document}

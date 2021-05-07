@@ -1,0 +1,14 @@
+\documentclass[tikz]{standalone}
+\begin{document}
+\begin{tikzpicture}
+\node [draw,circle,fill=red] (v2) at (0,0) {};
+\node [draw,circle,fill=vert] (v1) at (-1,-1) {};
+\node [draw,circle,fill=black] (v3) at (1,-1) {};
+\node [draw,circle,fill=black] (v5) at (0,-2) {};
+\draw  (v1) edge (v2);
+\draw  (v2) edge (v3);
+\draw  (v3) edge (v1);
+\draw  (v1) edge (v5);
+\draw  (v3) edge (v5);
+\end{tikzpicture}
+\end{document}
