@@ -2,9 +2,18 @@
 
 ## Mon projet d'informatique en théorie des graphes
 
-Mon superviseur est Gena Hahn (<hahn@iro.umontreal.ca>).
+### Résumé
 
-Alors que j'avais prévu faire un projet de recherche sur le problème de Hunter & Rabbit, je vais finalement implémenter une application pour visualiser un graphe et y jouer au problème de Cops & Robbers. Une modification pourrait alors implémenter le problème du chasseur initial.
+Les problèmes d'évasion consistent à trouver le nombre minimal de poursuivants nécessaires pour attraper un évadé se déplaçant sur un graphe. 
+Alors qu'originalement le projet consistait en de la recherche sur le problème de Cops & Robbers et ses variantes (principalement Hunter & Mole), le but de ce projet est finalement d'implémenter une application permettant de visualiser ces problèmes. L'application devra permettre de dessiner un graphe, de le modifier, de positionner des policiers et un voleur et de les faire se déplacer selon les règles.
+
+### Abstract
+
+In pursuit-evasion problems, the minimal number of cops needed to find a robber on a graph has to be found. The first goal of my project was to do some research around the Cops & Robbers problem and its variants (especially the Hunter & Mole problem). But then it changed to the second goal: implement an app to draw a graph to picture Cops & Robbers strategies.
+
+---
+
+Mon superviseur est Gena Hahn (<hahn@iro.umontreal.ca>).
 
 ---
 
