@@ -1,6 +1,6 @@
 # IFT3150
 
-## Mon projet d'informatique en théorie des graphes
+## Mon projet d'informatique en théorie des graphes (supervisé par Gena Hahn)
 
 ### Résumé
 
@@ -13,12 +13,9 @@ In pursuit-evasion problems, the minimal number of cops needed to find a robber 
 
 ---
 
-Mon superviseur est Gena Hahn (<hahn@iro.umontreal.ca>).
+Une fois clonné, il s'assurer d'avoir configuré un accès à la librairie JavaFX.
 
----
-
-Une fois clonné, il s'assurer d'avoir configuré un accès à la librairie JavaFX. 
-Il y a aussi besoin du module javafx.controls : sous IntelliJ, il faut l'ajouter avec ```--module-path "C:\path\to\javafx\lib" --add-modules javafx.controls,javafx.media``` dans les VM-options
+Il y a aussi besoin du module javafx.controls : sous IntelliJ, il faut l'ajouter avec ```--module-path "C:\path\to\javafx\lib" --add-modules javafx.controls``` dans les VM-options
 
 ---
 
