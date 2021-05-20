@@ -198,6 +198,8 @@ public class Vue extends Application {
         options.getChildren().addAll(backModifButton,backPersoButton);
 
         ImageView canvas = new ImageView("images/police-man-caught-robber1.png");
+        canvas.setFitWidth(this.widthCanvas);
+        canvas.setFitHeight((this.heightCanvas));
 
         root.getChildren().addAll(options,canvas);
         StackPane.setAlignment(options, Pos.CENTER_LEFT);
