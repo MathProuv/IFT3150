@@ -1,0 +1,33 @@
+\documentclass[tikz]{standalone}
+\begin{document}
+\begin{tikzpicture}
+
+\node [draw, circle, fill=black] (v1) at (0,0) {};
+\node [draw, circle, fill=black] (v2) at (1,0) {};
+\node [draw, circle, fill=black] (v3) at (2,0) {};
+\node [draw, circle, fill=red] (v4) at (3,0) {};
+\node [draw, circle, fill=black] (v5) at (4,0) {};
+\node [draw, circle, fill=vert] (v6) at (5,0) {};
+\node [draw, circle, fill=black] (v7) at (6,0) {};
+\node [draw, circle, fill=black] (v8) at (3,-1) {};
+\node [draw, circle, fill=black] (v12) at (2.5,-2) {};
+\node [draw, circle, fill=black] (v13) at (3,-2) {};
+\node [draw, circle, fill=black] (v14) at (3.5,-2) {};
+\node [draw, circle, fill=vert] (v9) at (3.5,1) {};
+\node [draw, circle, fill=vert] (v10) at (4.5,1) {};
+\node [draw, circle, fill=black] (v11) at (5,-1) {};
+\draw  (v1) edge (v2);
+\draw  (v2) edge (v3);
+\draw  (v3) edge (v4);
+\draw  (v4) edge (v5);
+\draw  (v5) edge (v6);
+\draw  (v6) edge (v7);
+\draw  (v4) edge (v8);
+\draw  (v5) edge (v9);
+\draw  (v5) edge (v10);
+\draw  (v6) edge (v11);
+\draw  (v8) edge (v12);
+\draw  (v8) edge (v13);
+\draw  (v8) edge (v14);
+\end{tikzpicture}
+\end{document}
